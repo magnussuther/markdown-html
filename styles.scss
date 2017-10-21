@@ -1,0 +1,143 @@
+@import './palette.scss';
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('https://fonts.gstatic.com/s/roboto/v18/CWB0XYA8bzo0kSThX0UTuA.woff2') format('woff2');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: #EEE;
+  font-family: 'Roboto';
+}
+
+#main-sidebar {
+  background: $primary-color-dark;
+
+  float: left;
+  display: none;
+  width: 20%;
+}
+
+#code-container {
+  background: $primary-color-dark;
+
+  width: 40%;
+}
+
+section > * {
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+section pre {
+  background: $primary-color;
+  padding: 0 20px;
+  color: $primary-color-text;
+}
+
+section pre code {
+  width: 100%;
+  display: inline-block;
+  overflow-x: auto;
+  padding: 30px 0;
+}
+
+section p code {
+  background: $primary-color;
+  color: $primary-color-text;
+  padding: 10px 10px;
+  display: block;
+}
+
+section blockquote {
+  padding: 30px;
+  background: $accent-color;
+  color: $primary-text-color;
+}
+
+section table {
+  display: block;
+  overflow-x: auto;
+}
+
+section aside.success {
+  background: $accent-color;
+}
+
+section aside.notice {
+  background: $primary-color;
+}
+
+section h1 {
+  background: #fff;
+  border-top: 1px solid $divider-color;
+  border-bottom: 1px solid $divider-color;
+  margin-top: 100px;
+}
+
+section h2 {
+  border-top: 1px dashed $divider-color;
+  margin-top: 50px;
+}
+
+section th {
+  background: $primary-color-dark;
+  padding: 10px 5px;
+  color: $primary-color-text;
+}
+
+section tbody td {
+  background: $primary-color-text;
+  padding: 5px 10px;
+}
+
+section > h1, section > h2, section > div {
+  clear: both;
+}
+
+@media (min-width: 700px) {
+  body {
+    background: linear-gradient(90deg, #EEE 60%, $primary-color-dark 40%);
+  }
+
+  section > * {
+      margin-right: 40%;
+  }
+
+  section > pre, section > blockquote {
+    margin-left: 0;
+    margin-right: 0;
+    float: right;
+    box-sizing: border-box;
+    display: block;
+    clear: both;
+    width: 40%;
+  }
+}
+
+@media (min-width: 930px) {
+  body {
+    background: linear-gradient(90deg,  $primary-color-dark 20%, #EEE 20%, #EEE 60%, $primary-color-dark 40%);
+  }
+
+  #main-sidebar {
+      display: block;
+  }
+
+  section > * {
+    // margin-right: 50%;
+    margin-left: 20%;
+  }
+
+  section > pre, section > blockquote {
+  }
+}

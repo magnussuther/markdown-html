@@ -76,6 +76,6 @@ PAGES.forEach((page, pageIndex) =>
         const html = convertMarkdownToHtml(result);
         const pageSection = createSectionForPage(pageIndex, html);
 
-        insertSectionIntoDom(pageSection);
+        insertSectionIntoDom(pageSection, pageIndex);
       });
     }));

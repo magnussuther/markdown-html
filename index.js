@@ -25,46 +25,57 @@ const doc = parser.parseFromString(`
 `, 'text/html');
 document.getElementsByTagName('body')[0].appendChild(doc.getElementById('root'));
 
+const readMarkdownBlob = (blob, onloadend) => {
+  const reader = new FileReader();
+  reader.readAsText(blob);
+  reader.onloadend = () => onloadend(reader.result);
+};
 
-PAGES.forEach((page, pageIndex) => {
-  fetch(`pages/${page}`).then((response) => {
-    return response.blob();
-  }).then((blob) => {
-    const reader = new FileReader();
-    reader.readAsText(blob);
-    reader.onloadend = () => {
-      const converter = new Converter();
-      converter.setFlavor('github');
+const convertMarkdownToHtml = (markdown) => {
+  const converter = new Converter();
+  converter.setFlavor('github');
+  return converter.makeHtml(markdown);
+};
 
-      const html = converter.makeHtml(reader.result);
+const createSectionForPage = (pageIndex, html) => {
+  const pageSection = document.createElement('section');
+  pageSection.setAttribute('class', 'page');
+  pageSection.setAttribute('id', `page-${pageIndex}`);
+  pageSection.innerHTML = html;
+  return pageSection;
+};
 
-      const pageSection = document.createElement('section');
-      pageSection.setAttribute('class', 'page');
-      pageSection.setAttribute('id', `page-${pageIndex}`);
-      pageSection.innerHTML = html;
+const insertSectionIntoDom = (pageSection, pageIndex) => {
+  const container = document.getElementById('content-container');
+  const existingSections = container.getElementsByTagName('section');
 
+  if (!existingSections || existingSections.length === 0) {
+    // Just append the first section to the page
+    container.appendChild(pageSection);
+    return;
+  }
 
-      console.log(`page ${page} has index ${pageIndex}`);
+  const adjecentSection = document.getElementById(`page-${pageIndex + 1}`);
 
-      const container = document.getElementById('content-container');
-      const existingSections = container.getElementsByTagName('section');
+  if (adjecentSection) {
+    // The adjecent page arrived before this page,
+    // but we need the pages to be in the order defined by PAGES.
+    container.insertBefore(pageSection, adjecentSection);
+    return;
+  }
 
-      if (existingSections && existingSections.length !== 0) {
-        console.log('existingSections', existingSections);
-        const adjecentSection = document.getElementById(`page-${pageIndex + 1}`);
+  // The page arrived in the order defined by PAGES,
+  // or happened to be the last page.
+  container.appendChild(pageSection);
+};
 
-        if (adjecentSection) {
-          console.log('adjecentSection', adjecentSection);
-          container.insertBefore(pageSection, adjecentSection);
-          console.log(`page ${page} inserted before ${adjecentSection.id}`);
-        } else {
-          container.appendChild(pageSection);
-          console.log(`page ${page} is appended`);
-        }
-      } else {
-        container.appendChild(pageSection);
-        console.log(`page ${page} is appended`);
-      }
-    };
-  });
-});
+PAGES.forEach((page, pageIndex) =>
+  fetch(`${page}`).then(response => response.blob())
+    .then((blob) => {
+      readMarkdownBlob(blob, (result) => {
+        const html = convertMarkdownToHtml(result);
+        const pageSection = createSectionForPage(pageIndex, html);
+
+        insertSectionIntoDom(pageSection);
+      });
+    }));

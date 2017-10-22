@@ -1,7 +1,7 @@
 module.exports = {
   entry: './index.js',
   output: {
-    filename: 'dokument.js',
+    filename: 'build/build.js',
   },
   module: {
     rules: [

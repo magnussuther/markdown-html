@@ -1,3 +1,10 @@
+/* global document: false */
+/* global fetch: false */
+/* global DOMParser: false */
+/* global FileReader: false */
+
+/* global PAGES: false */
+
 import { Converter } from 'showdown';
 
 import './palette.scss';
@@ -5,13 +12,6 @@ import './styles.scss';
 
 
 console.log(PAGES);
-
-// const rootElement = document.createElement('div');
-// const asideElement = document.createElement('aside');
-// asideElement.setAttribute('id', 'main-sidebar');
-
-// const contentElement = document.createElement('div');
-// contentElement.setAttribute('id', 'content-container');
 
 const parser = new DOMParser();
 const doc = parser.parseFromString(`
@@ -37,13 +37,13 @@ PAGES.forEach((page, pageIndex) => {
       converter.setFlavor('github');
 
       const html = converter.makeHtml(reader.result);
-      
+
       const pageSection = document.createElement('section');
       pageSection.setAttribute('class', 'page');
       pageSection.setAttribute('id', `page-${pageIndex}`);
       pageSection.innerHTML = html;
 
-      // console.log(pageContainer.getElementsByTagName('h1'));
+
       console.log(`page ${page} has index ${pageIndex}`);
 
       const container = document.getElementById('content-container');
